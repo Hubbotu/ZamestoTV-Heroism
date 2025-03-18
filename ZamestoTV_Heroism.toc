@@ -1,7 +1,7 @@
-## Interface: 110007
-## Title: ZamestoTV: Heroism
+## Interface: 110100
+## Title: Heroism
 ## Author: Zamesto TV
-## Version: 1.7
+## Version: 1.8
 ## Notes: This addon will show on your chat when someone cast any Haste Spell. Ex: Bloodlust, Heroism, Drums of Deathly Ferocity
 ## IconTexture: Interface\AddOns\ZamestoTV_Heroism\Icons\goblin
 ## DefaultState: Enabled
@@ -12,3 +12,7 @@
 ZH.lua
 LL.lua
 but.lua
+
+## Category-enUS: Addons ZamestoTV
+## Category-ruRU: Аддоны ZamestoTV
+## Category-deDe: ZamestoTV Add-ons

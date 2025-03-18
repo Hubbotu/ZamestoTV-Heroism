@@ -22,6 +22,16 @@ local localizations = {
         ["Self"] = "Себе",
         ["Raid warning"] = "Объявление рейда",		
         ["Test"] = "Тест"	
+    },
+    deDE = {
+        ["Turn On"] = "Einschalten",
+        ["Turn Off"] = "Ausschalten",
+        ["Yell"] = "Schreien",			
+        ["Group"] = "Gruppe",
+        ["Say"] = "Sagen",
+        ["Self"] = "Selbst",
+        ["Raid warning"] = "Schlachtzugswarnung",		
+        ["Test"] = "Testen"	
     }
 }
 
@@ -69,8 +79,8 @@ local function CreateButton(textKey, descEn, descRu, command, yOffset)
 end
 
 -- Add buttons to the panel
-    addon.category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
-    Settings.RegisterAddOnCategory(addon.category)
+addon.category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
+Settings.RegisterAddOnCategory(addon.category)
 local buttonOffset = -50
 CreateButton("Turn On", "Turn on feature.", "Включить функцию.", "/hero on", buttonOffset)
 CreateButton("Turn Off", "Turn off feature.", "Выключить функцию.", "/hero off", buttonOffset - 30)

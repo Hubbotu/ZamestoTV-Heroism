@@ -9,6 +9,10 @@ local L = {
         ["addonName"] = "Zamesto TV: Героизм",
         ["tooltipText"] = "Нажмите, чтобы открыть настройки",
     },
+    ["deDE"] = {
+        ["addonName"] = "Zamesto TV: Heldentum",
+        ["tooltipText"] = "Klicken, um die Optionen zu öffnen",
+    },
 }
 
 -- Main Addon SavedVariable Table
