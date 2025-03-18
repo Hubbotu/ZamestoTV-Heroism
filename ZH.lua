@@ -139,7 +139,7 @@ SLASH_HEROISM1 = "/hero"
 
 -- Haste Triggers
 local hasteItems = { [381301] = true, [444257] = true }
-local heroismSpells = { [2825] = true, [32182] = true, [272678] = true, [292686] = true, [80353] = true, [264667] = true, [390386] = true }
+local heroismSpells = { [2825] = true, [32182] = true, [264667] = true, [292686] = true, [80353] = true, [390386] = true }
 
 local activeCooldowns = {}
 local expiredCooldowns = {}
