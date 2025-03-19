@@ -51,7 +51,7 @@ title:SetPoint("TOP", 0, -16)
 title:SetText("Zamesto TV: Heroism")
 
 -- Function to create buttons
-local function CreateButton(textKey, descEn, descRu, command, yOffset)
+local function CreateButton(textKey, descEn, descRu, descDe, command, yOffset)
     local button = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     button:SetText(L(textKey))
     button:SetSize(120, 25)
@@ -68,7 +68,14 @@ local function CreateButton(textKey, descEn, descRu, command, yOffset)
 
     button:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(GetLocale() == "ruRU" and descRu or descEn)
+        local locale = GetLocale()
+        if locale == "ruRU" then
+            GameTooltip:SetText(descRu)
+        elseif locale == "deDE" then
+            GameTooltip:SetText(descDe)
+        else
+            GameTooltip:SetText(descEn)
+        end
         GameTooltip:Show()
     end)
     button:SetScript("OnLeave", function()
@@ -82,11 +89,11 @@ end
 addon.category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
 Settings.RegisterAddOnCategory(addon.category)
 local buttonOffset = -50
-CreateButton("Turn On", "Turn on feature.", "Включить функцию.", "/hero on", buttonOffset)
-CreateButton("Turn Off", "Turn off feature.", "Выключить функцию.", "/hero off", buttonOffset - 30)
-CreateButton("Yell", "Send message to yell.", "Отправить сообщение в крик.", "/hero yell", buttonOffset - 60)
-CreateButton("Group", "Send message to group.", "Отправить сообщение в группу.", "/hero group", buttonOffset - 90)
-CreateButton("Say", "Send message to nearby players.", "Отправить сообщение ближайшим игрокам.", "/hero say", buttonOffset - 120)
-CreateButton("Self", "Send message to yourself.", "Отправить сообщение самому себе.", "/hero self", buttonOffset - 150)
-CreateButton("Raid warning", "Send message to Raid warning.", "Отправить сообщение в объявление рейда.", "/hero rw", buttonOffset - 180)
-CreateButton("Test", "Test command.", "Тестовая команда.", "/hero test", buttonOffset - 210)
+CreateButton("Turn On", "Turn on feature.", "Включить функцию.", "Funktion einschalten.", "/hero on", buttonOffset)
+CreateButton("Turn Off", "Turn off feature.", "Выключить функцию.", "Funktion ausschalten.", "/hero off", buttonOffset - 30)
+CreateButton("Yell", "Send message to yell.", "Отправить сообщение в крик.", "Nachricht ins Schreien senden.", "/hero yell", buttonOffset - 60)
+CreateButton("Group", "Send message to group.", "Отправить сообщение в группу.", "Nachricht an die Gruppe senden.", "/hero group", buttonOffset - 90)
+CreateButton("Say", "Send message to nearby players.", "Отправить сообщение ближайшим игрокам.", "Nachricht an nahe Spieler senden.", "/hero say", buttonOffset - 120)
+CreateButton("Self", "Send message to yourself.", "Отправить сообщение самому себе.", "Nachricht an dich selbst senden.", "/hero self", buttonOffset - 150)
+CreateButton("Raid warning", "Send message to Raid warning.", "Отправить сообщение в объявление рейда.", "Nachricht an die Schlachtzugswarnung senden.", "/hero rw", buttonOffset - 180)
+CreateButton("Test", "Test command.", "Тестовая команда.", "Testbefehl.", "/hero test", buttonOffset - 210)

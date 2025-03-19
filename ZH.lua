@@ -139,7 +139,7 @@ SLASH_HEROISM1 = "/hero"
 
 -- Haste Triggers
 local hasteItems = { [381301] = true, [444257] = true }
-local heroismSpells = { [2825] = true, [32182] = true, [264667] = true, [292686] = true, [80353] = true, [390386] = true }
+local heroismSpells = { [2825] = true, [32182] = true, [264667] = true, [292686] = true, [80353] = true, [390386] = true, [272678] = true }
 
 local activeCooldowns = {}
 local expiredCooldowns = {}
@@ -157,6 +157,11 @@ end
 -- Pet Owner Resolver
 local function resolvePetOwner(petGUID)
     local groupType = IsInRaid() and "raid" or "party"
+    if groupType == "party" and GetNumGroupMembers() == 0 then
+        if UnitGUID("playerpet") == petGUID then
+            return UnitName("playerpet"), UnitName("player")
+        end
+    end
     for i = 1, GetNumGroupMembers() do
         local unit = groupType .. i
         if UnitGUID(unit .. "pet") == petGUID then
@@ -180,26 +185,26 @@ addonFrame:SetScript("OnEvent", function(_, event, ...)
 
     elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
         local _, logType, _, sourceGUID, sourceName, _, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo()
-        local groupSize = GetNumGroupMembers()
-
         local spellLink = C_Spell.GetSpellLink(spellID)
-        local isGroupMember = groupSize > 0 and UnitInParty(sourceName)
-        local isSolo = groupSize == 0 and UnitName("player") == sourceName
+        local isPet = select(2, string.split("-", sourceGUID)) == "Pet"
+        local petName, ownerName
+        if isPet then
+            petName, ownerName = resolvePetOwner(sourceGUID)
+        end
+        local isPlayer = UnitName("player") == sourceName
+        local isGroupMember = UnitInParty(sourceName) or (ownerName and UnitInParty(ownerName))
 
         if logType == "SPELL_CAST_SUCCESS" then
-            if hasteItems[spellID] and (isGroupMember or isSolo) then
+            if hasteItems[spellID] and (isGroupMember or isPlayer) then
                 outputMessage("{rt6} Heroism: [" .. UnitClass(sourceName) .. "] " .. sourceName .. " " .. lang.ABILITY_USED .. " " .. spellLink .. " " .. lang.HASTE_15_MSG .. " {rt6}")
                 beginCooldown(spellID, spellLink)
 
-            elseif heroismSpells[spellID] and (isGroupMember or isSolo) then
-                outputMessage("{rt7} Heroism: [" .. UnitClass(sourceName) .. "] " .. sourceName .. " " .. lang.SPELL_CAST .. " " .. spellLink .. " " .. lang.HASTE_30_MSG .. " {rt7}")
-                beginCooldown(spellID, spellLink)
-            end
-
-            if heroismSpells[spellID] and string.match(sourceGUID, "Pet") then
-                local petName, ownerName = resolvePetOwner(sourceGUID)
-                if petName and ownerName then
+            elseif heroismSpells[spellID] then
+                if isPet and petName and ownerName then
                     outputMessage("{rt7} " .. lang.PET_ABILITY .. ": [" .. petName .. "] " .. lang.SOURCE .. " " .. ownerName .. " " .. lang.SPELL_CAST .. " " .. spellLink .. " " .. lang.HASTE_30_MSG .. " {rt7}")
+                    beginCooldown(spellID, spellLink)
+                elseif isPlayer or isGroupMember then
+                    outputMessage("{rt7} Heroism: [" .. UnitClass(sourceName) .. "] " .. sourceName .. " " .. lang.SPELL_CAST .. " " .. spellLink .. " " .. lang.HASTE_30_MSG .. " {rt7}")
                     beginCooldown(spellID, spellLink)
                 end
             end
